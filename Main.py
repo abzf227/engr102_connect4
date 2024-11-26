@@ -21,38 +21,41 @@ def give_credits():
 
 
 def open_menu():
-    print("--------------------------------")
-    print(
-        ">>>> MAIN MENU <<<<\n\n*Rules [H]\n*Surrender [R]\n*Credits [C]\n*End Game Session [X]\n*Close Game Menu [Z]\n")
     allowed_inputs = ["h", "r", "c", "x", "z"]
     yes_no_allow = ["y", "n"]
-    next_input = input("What would you like to do? ").lower()
-    while next_input not in allowed_inputs:
-        next_input = input("Invalid input! What would you like to do? ").lower()
-    if next_input == "h":
-        give_rules()
-        open_menu()
-    elif next_input == "r":
-        next_input = input("Are you sure? Doing so will automatically forfeit this game (y/n): ")
-        while next_input not in yes_no_allow:
-            next_input = input("Invalid input! Would you like to surrender this game? (y/n): ")
-        if next_input == "y":
-            print("--------------------------------")
-            return "surrender"
+    while True:
+        print("--------------------------------")
+        print(
+            ">>>> MAIN MENU <<<<\n\n*Rules [H]\n*Surrender [R]\n*Credits [C]\n*End Game Session [X]\n*Close Game Menu "
+            "[Z]\n")
+        next_input = input("What would you like to do? ").lower()
+        while next_input not in allowed_inputs:
+            next_input = input("Invalid input! What would you like to do? ").lower()
+        if next_input == "h":
+            give_rules()
+            continue
+        elif next_input == "r":
+            next_input = input("Are you sure? Doing so will automatically forfeit this game (y/n): ")
+            while next_input not in yes_no_allow:
+                next_input = input("Invalid input! Would you like to surrender this game? (y/n): ")
+            if next_input == "y":
+                print("--------------------------------")
+                return "surrender"
+            else:
+                continue
+        elif next_input == "c":
+            give_credits()
+            continue
+        elif next_input == "x":
+            next_input = input("Are you sure? Doing so will automatically end this game session for BOTH players (y/n): ")
+            while next_input not in yes_no_allow:
+                next_input = input("Invalid input! Would you like to end this game session? (y/n): ")
+            if next_input == "y":
+                print("--------------------------------")
+                return "end session"
         else:
-            open_menu()
-    elif next_input == "c":
-        give_credits()
-        open_menu()
-    elif next_input == "x":
-        next_input = input("Are you sure? Doing so will automatically end this game session for BOTH players (y/n): ")
-        while next_input not in yes_no_allow:
-            next_input = input("Invalid input! Would you like to end this game session? (y/n): ")
-        if next_input == "y":
             print("--------------------------------")
-            return "end session"
-    elif next_input == "z":
-        return "close menu"
+            return "close menu"
 
 
 def create_board():  # create a board (technically unneeded, but it makes the code look neater)
@@ -75,7 +78,7 @@ def update_board(board, col, icon):
     col = int(col) - 1
     row = 0
     while row < len(board):
-        if (board[row][col] != '.'):
+        if board[row][col] != '.':
             break
         else:
             row += 1
@@ -161,11 +164,14 @@ while game_running:
         print_board(board)
         print(f"It's Player {(current_turn + 1) % 2 + 1}'s {icons[(current_turn + 1) % 2 + 1]} turn...")
         col = input("Please enter a column from 1-7 (or press 0 for more options): ")
+
         while not valid_input(board, col):
             if int(col) == 0:
-                if open_menu() == "surrender":
+                menu_action = open_menu()  # Store the result of open_menu()
+                if menu_action == "surrender":
                     print_board(board)
-                    print(f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+                    print(
+                        f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
                     if current_turn % 2 == 1:
                         p1_wins += 1
                     else:
@@ -174,17 +180,23 @@ while game_running:
                     game_end = True
                     print("--------------------------------")
                     break
-                elif open_menu() == "end session":
+                elif menu_action == "end session":
                     print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
                     game_running = False
                     break
-                elif open_menu() == "close menu":
+                elif menu_action == "close menu":
                     col = input("Please enter a column from 1-7 (or press 0 for more options): ")
+                    continue  # Exit the menu and continue to prompt for input
             col = input("Invalid input! Please try again: ")
+
+        if game_end or not game_running:
+            break
+
         board = update_board(board, col, icons[(current_turn + 1) % 2 + 1])
         if check_for_win(board):
             print_board(board)
-            print(f"Connect 4! Player {(current_turn + 1) % 2 + 1} {((current_turn + 1) % 2 + 1)} has won on turn {current_turn}!")
+            print(
+                f"Connect 4! Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
             if current_turn % 2 == 1:
                 p1_wins += 1
             else:
@@ -195,6 +207,7 @@ while game_running:
         else:
             print("--------------------------------")
             current_turn += 1
+
     rematch = input("Rematch? (y/n): ")
     while rematch.lower() != "y" and rematch.lower() != "n":
         rematch = input("Invalid input! Rematch or no? (y/n): ")
