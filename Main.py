@@ -1,6 +1,9 @@
 #as an aggie...
 
 from playsound import playsound
+#pip install playsound==1.2.2
+#if 'playsound' is already installed consider uninstalling it first as bugs have been known to arise
+#this is **REQUIRED** for the program
 
 
 def give_rules():
@@ -238,10 +241,10 @@ while game_running:
                 if menu_action == "surrender":
                     print_board(board)
                     log_text.write(
-                        f"Player {current_turn % 2 + 1} has surrendered to Player {(current_turn + 1) % 2 + 1} on turn {current_turn}!\n")
+                        f"Player {(current_turn+1) % 2 + 1} has surrendered to Player {current_turn % 2 + 1} on turn {current_turn}!\n")
                     log_text.flush()
                     print(
-                        f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+                        f"Player {(current_turn+1) % 2 + 1} {icons[(current_turn+1) % 2 + 1]} has surrendered to Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has won on turn {current_turn}!")
                     if current_turn % 2 == 1:
                         p1_wins += 1
                     else:
@@ -253,10 +256,11 @@ while game_running:
                     print("--------------------------------")
                     break
                 elif menu_action == "end session":
-                    print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+                    print(f"Game ended!\nFinal Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+                    print("--------------------------------")
                     game_running = False
                     early_end = True
-                    log_text.write(f"Final Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
+                    log_text.write(f"Player {(current_turn+1) % 2 + 1} ended the session.\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2\n====END LOG====")
                     log_text.close()
                     break
                 elif menu_action == "close menu":
@@ -307,8 +311,9 @@ while game_running:
             rematch = input("Invalid input! Rematch or no? (y/n): ")
         if rematch == "n":
             print("--------------------------------")
-            log_text.write(f"====GAME HAS ENDED====\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
+            log_text.write(f"====GAME HAS ENDED====\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2\n====END LOG====")
             print(f"Game Over!\nFinal Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+            print("--------------------------------")
             game_running = False
             log_text.close()
         else:
