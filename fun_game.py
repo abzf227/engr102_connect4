@@ -197,7 +197,7 @@ def check_for_tie(board):
 
 
 #main:
-log_text = open("log.txt", 'w')
+log_text = open("fun_game_log.txt", 'w')
 print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
       "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, "
       "Mason Kielinski,"
