@@ -200,7 +200,7 @@ def check_for_tie(board):
 log_text = open("fun_game_log.txt", 'w')
 print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
       "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, "
-      "Mason Kielinski,"
+      "Mason Kielinski, "
       "Daniel Wisa\n(Title ASCII Art credit to patorjk.com)\n")
 input("Enter anything to start... ")
 
