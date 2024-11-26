@@ -185,6 +185,7 @@ while game_running:
                     game_running = False
                     break
                 elif menu_action == "close menu":
+                    print_board(board)
                     col = input("Please enter a column from 1-7 (or press 0 for more options): ")
                     continue  # Exit the menu and continue to prompt for input
             col = input("Invalid input! Please try again: ")
