@@ -4,6 +4,12 @@ from playsound import playsound
 
 
 def give_rules():
+    """Informational function that provides rules.
+
+    :param: none
+    :return: none
+    """
+
     print("--------------------------------")
     print(">>>> RULES <<<<")
     print("\nAlright, it's simple: each turn, a player makes one move: select a column and your \"chip\" "
@@ -16,6 +22,12 @@ def give_rules():
 
 
 def give_credits():
+    """Informational function that provides credits.
+
+    :param: none
+    :return: none
+    """
+
     print("--------------------------------")
     print(">>> CREDITS <<<<")
     print("Connect 4 was developed for ENGR 102's Team Lab 13 by Team 3 consisting of:\n*Andrew Feng\n*Jacob "
@@ -24,6 +36,12 @@ def give_credits():
 
 
 def open_menu():
+    """Opens the main menu which provides multiple different options for the current player.
+
+    :param: none
+    :return: a string that differs based on user input, which can cause the game to end, quit, or continue
+    """
+
     allowed_inputs = ["h", "r", "c", "x", "z"]
     yes_no_allow = ["y", "n"]
     while True:
@@ -62,13 +80,24 @@ def open_menu():
             return "close menu"
 
 
-def create_board():  # create a board (technically unneeded, but it makes the code look neater)
+def create_board():
+    """Create an empty board (unneeded, but it makes the main code look neater)
+
+    :param: none
+    :return: empty 6x7 board (2D list) of periods
+    """
+
     return [[".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", "."]]
 
 
-def print_board(board):  # define how to print the board
+def print_board(board):
+    """Prints the formatted and visually enhanced board with a heading and little legs.
+
+    :param board: 2D list of the current in-game board
+    :return: none
+    """
     print(" _1__2__3__4__5__6__7_")
     for i in range(len(board)):
         print("|", end="")
@@ -79,6 +108,13 @@ def print_board(board):  # define how to print the board
 
 
 def update_board(board, col, icon):
+    """Updates the current in-game board after a new turn; plays a small SFX as well.
+
+    :param board: 2D list of current in-game board
+    :param col: column to place new icon
+    :param icon: current player's icon
+    :return: updated 2D list of new in-game board
+    """
     col = int(col) - 1
     row = 0
     while row < len(board):
@@ -92,6 +128,12 @@ def update_board(board, col, icon):
 
 
 def valid_input(board, col):
+    """Checks input for validity.
+
+    :param board: 2D list of current in-game board
+    :param col: Column player is attempting to add to
+    :return: True if input is valid and False if not
+    """
     try:
         col = int(col)
     except ValueError:
@@ -103,6 +145,11 @@ def valid_input(board, col):
 
 
 def check_for_win(board):
+    """Checks board for a win.
+
+    :param board: 2D list of current in-game board
+    :return: True if Connect 4 (horizontal, vertical, diagonal) is reached and False if not
+    """
     rows = len(board)
     cols = len(board[0])
 
@@ -136,10 +183,21 @@ def check_for_win(board):
     return False  # no winner yet
 
 
+def check_for_tie(board):
+    """Comes after check_for_win(board) that checks if all places have been filled.
+
+    :param board: 2D list of current in-game board
+    :return: True if board is full and False if not
+    """
+
+    return not "." in board[0]
+
+
 #main:
-logtext = open("log.txt", 'w')
+log_text = open("log.txt", 'w')
 print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
-      "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, Mason Kielinski, "
+      "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, "
+      "Mason Kielinski,"
       "Daniel Wisa\n(Title ASCII Art credit to patorjk.com)\n")
 input("Enter anything to start... ")
 
@@ -160,13 +218,15 @@ icons = {
 
 p1_wins = 0
 p2_wins = 0
+current_game = 1
 game_running = True
 while game_running:
+    log_text.write(f"====GAME {current_game}====\n")
     board = create_board()
     game_end = False
     current_turn = 1
     while not game_end:
-        print(f"Player 1: {icons[1]}    ||    Player 2: {icons[2]} \nCurrent turn: {current_turn}\n")
+        print(f"Player 1: {icons[1]}    ||    Player 2: {icons[2]} \nCurrent game: {current_game}\nCurrent turn: {current_turn}\n")
         print_board(board)
         print(f"It's Player {(current_turn + 1) % 2 + 1}'s {icons[(current_turn + 1) % 2 + 1]} turn...")
         col = input("Please enter a column from 1-7 (or press 0 for more options): ")
@@ -176,8 +236,9 @@ while game_running:
                 menu_action = open_menu()  # Store the result of open_menu()
                 if menu_action == "surrender":
                     print_board(board)
-                    logtext.write(f"Player {current_turn % 2 + 1} has surrendered to Player {(current_turn + 1) % 2 + 1} has won on turn {current_turn}!\n")
-                    logtext.flush()
+                    log_text.write(
+                        f"Player {current_turn % 2 + 1} has surrendered to Player {(current_turn + 1) % 2 + 1} on turn {current_turn}!\n")
+                    log_text.flush()
                     print(
                         f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
                     if current_turn % 2 == 1:
@@ -185,16 +246,16 @@ while game_running:
                     else:
                         p2_wins += 1
                     print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
-                    logtext.write(f"Current Record: player 1 {p1_wins} - player 2 {p2_wins}\n")
-                    logtext.flush()
+                    log_text.write(f"Current Record: player 1 {p1_wins} - player 2 {p2_wins}\n")
+                    log_text.flush()
                     game_end = True
                     print("--------------------------------")
                     break
                 elif menu_action == "end session":
                     print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
                     game_running = False
-                    logtext.write(f"Final Record: player 1 {p1_wins} - player 2 {p2_wins}\nThanks for playing!!\n")
-                    logtext.flush()
+                    log_text.write(f"Final Record: player 1 {p1_wins} - player 2 {p2_wins}\nThanks for playing!!\n")
+                    log_text.flush()
                     break
                 elif menu_action == "close menu":
                     print_board(board)
@@ -206,22 +267,28 @@ while game_running:
             break
 
         board = update_board(board, col, icons[(current_turn + 1) % 2 + 1])
-        logtext.write(f'player {(current_turn + 1) % 2 + 1} placed in column {col}\n')
-        logtext.flush()
+        log_text.write(f'Player {(current_turn + 1) % 2 + 1} placed chip in column {col}\n')
+        log_text.flush()
         if check_for_win(board):
             print_board(board)
-            print(f"Connect 4! Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
-            logtext.write(f"Connect 4! Player {(current_turn + 1) % 2 + 1} has won on turn {current_turn}!\n")
-            logtext.flush()
+            print(
+                f"Connect 4! Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+            log_text.write(f"Connect 4! Player {(current_turn + 1) % 2 + 1} has won on turn {current_turn}!\n")
+            log_text.flush()
             if current_turn % 2 == 1:
                 p1_wins += 1
             else:
                 p2_wins += 1
             print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
-            logtext.write(f"Current Record: (player 1) {p1_wins} - (player 2) {p2_wins}")
-            logtext.flush()
+            log_text.write(f"Current Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2\n")
+            log_text.flush()
             game_end = True
             print("--------------------------------")
+        elif check_for_tie(board):
+            print_board(board)
+            print("It's a tie! Board is full with no win for either player.")
+            log_text.write("Players have tied! Board is full with no win for either player.")
+            log_text.flush()
         else:
             print("--------------------------------")
             current_turn += 1
@@ -230,5 +297,11 @@ while game_running:
     while rematch.lower() != "y" and rematch.lower() != "n":
         rematch = input("Invalid input! Rematch or no? (y/n): ")
     if rematch == "n":
-        print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+        print("--------------------------------")
+        log_text.write(f"====GAME HAS ENDED====\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
+        print(f"Game Over!\nFinal Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
         game_running = False
+        log_text.close()
+    else:
+        current_game += 1
+

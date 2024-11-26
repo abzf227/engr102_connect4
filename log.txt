@@ -1,1 +1,13 @@
-player 1 placed in column 7
+====GAME 1====
+Player 1 placed chip in column 1
+Player 2 placed chip in column 2
+Player 1 placed chip in column 3
+Player 2 placed chip in column 2
+Player 1 placed chip in column 3
+Player 2 placed chip in column 2
+Player 1 placed chip in column 3
+Player 2 placed chip in column 2
+Connect 4! Player 2 has won on turn 8!
+Current Record: Player 1 (0) - 1 (Player 2)
+====GAME HAS ENDED====
+Final Record: Player 1 (0) - (1) Player 2
