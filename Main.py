@@ -87,6 +87,7 @@ def update_board(board, col, icon):
         else:
             row += 1
     board[row - 1][col] = icon
+    playsound("connect4_sound.mp3")
     return board
 
 
@@ -167,8 +168,6 @@ while game_running:
     while not game_end:
         print(f"Player 1: {icons[1]}    ||    Player 2: {icons[2]} \nCurrent turn: {current_turn}\n")
         print_board(board)
-        if current_turn > 1:
-            playsound("connect4_sound.mp3")
         print(f"It's Player {(current_turn + 1) % 2 + 1}'s {icons[(current_turn + 1) % 2 + 1]} turn...")
         col = input("Please enter a column from 1-7 (or press 0 for more options): ")
 
