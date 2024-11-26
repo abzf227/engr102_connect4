@@ -245,7 +245,7 @@ while game_running:
                     log_text.flush()
                     print(
                         f"Player {(current_turn+1) % 2 + 1} {icons[(current_turn+1) % 2 + 1]} has surrendered to Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has won on turn {current_turn}!")
-                    if current_turn % 2 == 1:
+                    if (current_turn+1) % 2 == 1:
                         p1_wins += 1
                     else:
                         p2_wins += 1

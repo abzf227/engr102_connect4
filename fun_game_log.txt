@@ -1,0 +1,23 @@
+====GAME 1====
+Player 1 placed chip in column 1
+Player 2 placed chip in column 5
+Player 1 placed chip in column 4
+Player 2 placed chip in column 6
+Player 1 placed chip in column 2
+Player 2 placed chip in column 4
+Player 1 placed chip in column 3
+Connect 4! Player 1 has won on turn 7!
+Current Record: Player 1 (1) - (0) Player 2
+====GAME 2====
+Player 1 placed chip in column 3
+Player 2 placed chip in column 2
+Player 1 placed chip in column 3
+Player 2 placed chip in column 2
+Player 1 placed chip in column 4
+Player 2 has surrendered to Player 1 on turn 6!
+Current Record: Player 1 (1) - (1) Player 2
+====GAME 3====
+Player 1 placed chip in column 3
+Player 2 ended the session.
+Final Record: Player 1 (1) - (1) Player 2
+====END LOG====
