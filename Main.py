@@ -220,6 +220,7 @@ p1_wins = 0
 p2_wins = 0
 current_game = 1
 game_running = True
+early_end = False
 while game_running:
     log_text.write(f"====GAME {current_game}====\n")
     board = create_board()
@@ -254,6 +255,7 @@ while game_running:
                 elif menu_action == "end session":
                     print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
                     game_running = False
+                    early_end = True
                     log_text.write(f"Final Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
                     log_text.close()
                     break
@@ -299,15 +301,16 @@ while game_running:
             print("--------------------------------")
             current_turn += 1
 
-    rematch = input("Rematch? (y/n): ")
-    while rematch.lower() != "y" and rematch.lower() != "n":
-        rematch = input("Invalid input! Rematch or no? (y/n): ")
-    if rematch == "n":
-        print("--------------------------------")
-        log_text.write(f"====GAME HAS ENDED====\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
-        print(f"Game Over!\nFinal Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
-        game_running = False
-        log_text.close()
-    else:
-        current_game += 1
+    if not early_end:
+        rematch = input("Rematch? (y/n): ")
+        while rematch.lower() != "y" and rematch.lower() != "n":
+            rematch = input("Invalid input! Rematch or no? (y/n): ")
+        if rematch == "n":
+            print("--------------------------------")
+            log_text.write(f"====GAME HAS ENDED====\nFinal Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
+            print(f"Game Over!\nFinal Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+            game_running = False
+            log_text.close()
+        else:
+            current_game += 1
 
