@@ -11,6 +11,7 @@ def give_rules():
     input("\nOnce you're ready, press anything to continue... ")
     print("Good luck!")
 
+
 def give_credits():
     print("--------------------------------")
     print(">>> CREDITS <<<<")
@@ -19,12 +20,11 @@ def give_credits():
     input("\nPress anything to continue... ")
 
 
-
 def open_menu():
     print("--------------------------------")
     print(
         ">>>> MAIN MENU <<<<\n\n*Rules [H]\n*Surrender [R]\n*Credits [C]\n*End Game Session [X]\n*Close Game Menu [Z]\n")
-    allowed_inputs = ["h", "r", "c", "x"]
+    allowed_inputs = ["h", "r", "c", "x", "z"]
     yes_no_allow = ["y", "n"]
     next_input = input("What would you like to do? ").lower()
     while next_input not in allowed_inputs:
@@ -44,7 +44,15 @@ def open_menu():
     elif next_input == "c":
         give_credits()
         open_menu()
-
+    elif next_input == "x":
+        next_input = input("Are you sure? Doing so will automatically end this game session for BOTH players (y/n): ")
+        while next_input not in yes_no_allow:
+            next_input = input("Invalid input! Would you like to end this game session? (y/n): ")
+        if next_input == "y":
+            print("--------------------------------")
+            return "end session"
+    elif next_input == "z":
+        return "close menu"
 
 
 def create_board():  # create a board (technically unneeded, but it makes the code look neater)
@@ -136,39 +144,52 @@ else:
     print("Good luck!")
 print("--------------------------------")
 
-icon_1 = "\u25CF"
-icon_2 = "\u25CE"
+icons = {
+    1: "\u25CF",
+    2: "\u25CE"
+}
+
 p1_wins = 0
 p2_wins = 0
 game_running = True
 while game_running:
     board = create_board()
-
     game_end = False
     current_turn = 1
-    current_player = None
     while not game_end:
-        if current_turn % 2 != 0:
-            current_player = icon_1
-        else:
-            current_player = icon_2
-        print(f"Player 1: {icon_1}    ||    Player 2: {icon_2} \nCurrent turn: {current_turn}\n")
+        print(f"Player 1: {icons[1]}    ||    Player 2: {icons[2]} \nCurrent turn: {current_turn}\n")
         print_board(board)
-        print(f"It's Player {(current_turn + 1) % 2 + 1}'s {current_player} turn...")
+        print(f"It's Player {(current_turn + 1) % 2 + 1}'s {icons[(current_turn + 1) % 2 + 1]} turn...")
         col = input("Please enter a column from 1-7 (or press 0 for more options): ")
         while not valid_input(board, col):
             if int(col) == 0:
-                open_menu()
+                if open_menu() == "surrender":
+                    print_board(board)
+                    print(f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+                    if current_turn % 2 == 1:
+                        p1_wins += 1
+                    else:
+                        p2_wins += 1
+                    print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
+                    game_end = True
+                    print("--------------------------------")
+                    break
+                elif open_menu() == "end session":
+                    print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
+                    game_running = False
+                    break
+                elif open_menu() == "close menu":
+                    col = input("Please enter a column from 1-7 (or press 0 for more options): ")
             col = input("Invalid input! Please try again: ")
-        board = update_board(board, col, current_player)
+        board = update_board(board, col, icons[(current_turn + 1) % 2 + 1])
         if check_for_win(board):
             print_board(board)
-            print(f"Player {(current_turn + 1) % 2 + 1} {current_player} has won on turn {current_turn}!")
+            print(f"Connect 4! Player {(current_turn + 1) % 2 + 1} {((current_turn + 1) % 2 + 1)} has won on turn {current_turn}!")
             if current_turn % 2 == 1:
                 p1_wins += 1
             else:
                 p2_wins += 1
-            print(f"Current Record: {icon_1} {p1_wins} - {p2_wins} {icon_2}")
+            print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
             game_end = True
             print("--------------------------------")
         else:
@@ -178,5 +199,5 @@ while game_running:
     while rematch.lower() != "y" and rematch.lower() != "n":
         rematch = input("Invalid input! Rematch or no? (y/n): ")
     if rematch == "n":
-        print(f"Final Record: {icon_1} {p1_wins} - {p2_wins} {icon_2}\nThanks for playing!!")
+        print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
         game_running = False
