@@ -74,9 +74,11 @@ def check_for_win(board):
 
 
 #main:
-print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  |_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\nBy Andrew Feng, Jacob Jones, Mason Kielinski, Daniel Wisa\nASCII Art credit to patorjk.com\n")
+print("_____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
+      "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Andrew Feng, Jacob Jones, Mason Kielinski, "
+      "Daniel Wisa\n(\"Connect 4\" ASCII Art credit to patorjk.com)\n")
 input("Enter anything to start... ")
-
+print("--------------------------------")
 
 icon_1 = "\u25CF"
 icon_2 = "\u25CE"
