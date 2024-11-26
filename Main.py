@@ -136,6 +136,7 @@ def check_for_win(board):
 
 
 #main:
+logtext = open("log.txt", 'w')
 print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
       "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, Mason Kielinski, "
       "Daniel Wisa\n(Title ASCII Art credit to patorjk.com)\n")
@@ -176,6 +177,8 @@ while game_running:
                 menu_action = open_menu()  # Store the result of open_menu()
                 if menu_action == "surrender":
                     print_board(board)
+                    logtext.write(f"Player {current_turn % 2 + 1} has surrendered to Player {(current_turn + 1) % 2 + 1} has won on turn {current_turn}!\n")
+                    logtext.flush()
                     print(
                         f"Player {current_turn % 2 + 1} {icons[current_turn % 2 + 1]} has surrendered to Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
                     if current_turn % 2 == 1:
@@ -183,12 +186,16 @@ while game_running:
                     else:
                         p2_wins += 1
                     print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
+                    logtext.write(f"Current Record: player 1 {p1_wins} - player 2 {p2_wins}\n")
+                    logtext.flush()
                     game_end = True
                     print("--------------------------------")
                     break
                 elif menu_action == "end session":
                     print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
                     game_running = False
+                    logtext.write(f"Final Record: player 1 {p1_wins} - player 2 {p2_wins}\nThanks for playing!!\n")
+                    logtext.flush()
                     break
                 elif menu_action == "close menu":
                     print_board(board)
@@ -200,15 +207,20 @@ while game_running:
             break
 
         board = update_board(board, col, icons[(current_turn + 1) % 2 + 1])
+        logtext.write(f'player {(current_turn + 1) % 2 + 1} placed in column {col}\n')
+        logtext.flush()
         if check_for_win(board):
             print_board(board)
-            print(
-                f"Connect 4! Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+            print(f"Connect 4! Player {(current_turn + 1) % 2 + 1} {icons[(current_turn + 1) % 2 + 1]} has won on turn {current_turn}!")
+            logtext.write(f"Connect 4! Player {(current_turn + 1) % 2 + 1} has won on turn {current_turn}!\n")
+            logtext.flush()
             if current_turn % 2 == 1:
                 p1_wins += 1
             else:
                 p2_wins += 1
             print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
+            logtext.write(f"Current Record: (player 1) {p1_wins} - (player 2) {p2_wins}")
+            logtext.flush()
             game_end = True
             print("--------------------------------")
         else:
