@@ -246,7 +246,7 @@ while game_running:
                     else:
                         p2_wins += 1
                     print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
-                    log_text.write(f"Current Record: player 1 {p1_wins} - player 2 {p2_wins}\n")
+                    log_text.write(f"Current Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2\n")
                     log_text.flush()
                     game_end = True
                     print("--------------------------------")
@@ -254,8 +254,8 @@ while game_running:
                 elif menu_action == "end session":
                     print(f"Final Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}\nThanks for playing!!")
                     game_running = False
-                    log_text.write(f"Final Record: player 1 {p1_wins} - player 2 {p2_wins}\nThanks for playing!!\n")
-                    log_text.flush()
+                    log_text.write(f"Final Record: Player 1 ({p1_wins}) - ({p2_wins}) Player 2")
+                    log_text.close()
                     break
                 elif menu_action == "close menu":
                     print_board(board)
@@ -288,7 +288,13 @@ while game_running:
             print_board(board)
             print("It's a tie! Board is full with no win for either player.")
             log_text.write("Players have tied! Board is full with no win for either player.")
+            p1_wins += 0.5
+            p2_wins += 0.5
+            print(f"Current Record: {icons[1]} {p1_wins} - {p2_wins} {icons[2]}")
+            log_text.write(f"Current Record: Player 1 {p1_wins} - Player 2 {p2_wins}\n")
             log_text.flush()
+            game_end = True
+            print("--------------------------------")
         else:
             print("--------------------------------")
             current_turn += 1
