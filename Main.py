@@ -1,5 +1,52 @@
 #as an aggie...
 
+def give_rules():
+    print("--------------------------------")
+    print(">>>> RULES <<<<")
+    print("\nAlright, it's simple: each turn, a player makes one move: select a column and your \"chip\" "
+          "will\nfall to the bottom of that column.\n\nIn order to win, you need to connect four of your OWN "
+          "pieces together (whether it be in a line\nor a diagonal) while simultaneously making sure your "
+          "opponent doesn't get there first!\n\nThat's basically the entire gist of it. If you ever need help, "
+          "simply enter \"0\" when it's your turn.")
+    input("\nOnce you're ready, press anything to continue... ")
+    print("Good luck!")
+
+def give_credits():
+    print("--------------------------------")
+    print(">>> CREDITS <<<<")
+    print("Connect 4 was developed for ENGR 102's Team Lab 13 by Team 3 consisting of:\n*Andrew Feng\n*Jacob "
+          "Jones\n*Mason Kielinski\n*Daniel Wisa\n\nLast updated 4:19 AM CST on November 26th, 2024.")
+    input("\nPress anything to continue... ")
+
+
+
+def open_menu():
+    print("--------------------------------")
+    print(
+        ">>>> MAIN MENU <<<<\n\n*Rules [H]\n*Surrender [R]\n*Credits [C]\n*End Game Session [X]\n*Close Game Menu [Z]\n")
+    allowed_inputs = ["h", "r", "c", "x"]
+    yes_no_allow = ["y", "n"]
+    next_input = input("What would you like to do? ").lower()
+    while next_input not in allowed_inputs:
+        next_input = input("Invalid input! What would you like to do? ").lower()
+    if next_input == "h":
+        give_rules()
+        open_menu()
+    elif next_input == "r":
+        next_input = input("Are you sure? Doing so will automatically forfeit this game (y/n): ")
+        while next_input not in yes_no_allow:
+            next_input = input("Invalid input! Would you like to surrender this game? (y/n): ")
+        if next_input == "y":
+            print("--------------------------------")
+            return "surrender"
+        else:
+            open_menu()
+    elif next_input == "c":
+        give_credits()
+        open_menu()
+
+
+
 def create_board():  # create a board (technically unneeded, but it makes the code look neater)
     return [[".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", "."],
@@ -74,10 +121,19 @@ def check_for_win(board):
 
 
 #main:
-print("_____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
-      "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Andrew Feng, Jacob Jones, Mason Kielinski, "
-      "Daniel Wisa\n(\"Connect 4\" ASCII Art credit to patorjk.com)\n")
+print(" _____                     _      ___\n|     |___ ___ ___ ___ ___| |_   | | |\n|   --| . |   |   | -_|  _|  _|  "
+      "|_  |\n|_____|___|_|_|_|_|___|___|_|      |_|\n>>>> Connect 4 <<<<\nBy Team 3 - Andrew Feng, Jacob Jones, Mason Kielinski, "
+      "Daniel Wisa\n(Title ASCII Art credit to patorjk.com)\n")
 input("Enter anything to start... ")
+
+print("--------------------------------")
+ip = input("Welcome to Connect 4! Do you need to learn the rules? (y/n) ")
+while ip.lower() != "y" and ip.lower() != "n":
+    ip = input("Invalid input! Do you need to learn the rules? (y/n) ")
+if ip.lower() == "y":
+    give_rules()
+else:
+    print("Good luck!")
 print("--------------------------------")
 
 icon_1 = "\u25CF"
@@ -99,8 +155,10 @@ while game_running:
         print(f"Player 1: {icon_1}    ||    Player 2: {icon_2} \nCurrent turn: {current_turn}\n")
         print_board(board)
         print(f"It's Player {(current_turn + 1) % 2 + 1}'s {current_player} turn...")
-        col = input("Please enter a column from 1-7: ")
+        col = input("Please enter a column from 1-7 (or press 0 for more options): ")
         while not valid_input(board, col):
+            if int(col) == 0:
+                open_menu()
             col = input("Invalid input! Please try again: ")
         board = update_board(board, col, current_player)
         if check_for_win(board):
